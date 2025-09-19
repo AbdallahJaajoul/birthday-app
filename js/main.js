@@ -1,6 +1,6 @@
 // Código do usuário
 let codigo = localStorage.getItem('codigoUsuario');
-if(!codigo) {
+if(!codigo){
   codigo = prompt("Digite seu código de usuário (user1 até user25):");
   localStorage.setItem('codigoUsuario', codigo);
 }
@@ -9,35 +9,44 @@ if(!codigo) {
 const lista = document.getElementById('lista');
 const mensagem = document.getElementById('mensagem');
 const btnAdicionar = document.getElementById('btnAdicionar');
-btnAdicionar.addEventListener('click', () => { window.location.href = 'adicionar.html'; });
+btnAdicionar.addEventListener('click', ()=>{window.location.href='adicionar.html';});
 
 // Membros
 let membros = JSON.parse(localStorage.getItem('membros')) || [];
 
-// Renderizar lista do usuário
-function renderizar() {
-  lista.innerHTML = '';
+// Carrega membros de JSON
+fetch('membros.json')
+  .then(res=>res.json())
+  .then(data=>{
+    const chaveExistente = membros.map(m=>m.codigo+m.nome+m.data);
+    data.forEach(m=>{
+      if(!chaveExistente.includes(m.codigo+m.nome+m.data)) membros.push(m);
+    });
+    localStorage.setItem('membros', JSON.stringify(membros));
+    renderizar();
+  });
+
+function renderizar(){
+  lista.innerHTML='';
   const hoje = new Date().toISOString().slice(5,10); // MM-DD
   let aniversarianteHoje = false;
 
-  membros.filter(m => m.codigo === codigo).forEach((m,i) => {
+  membros.filter(m=>m.codigo===codigo).forEach((m,i)=>{
     const li = document.createElement('li');
     li.innerHTML = `${m.nome} - ${m.data} <button onclick="remover(${i})">❌</button>`;
     lista.appendChild(li);
-    if(m.data.slice(5) === hoje) aniversarianteHoje = true;
+    if(m.data.slice(5)===hoje) aniversarianteHoje = true;
   });
 
   if(aniversarianteHoje) mostrarMensagem();
   else mensagem.innerHTML='';
 }
 
-// Mensagem de parabéns
-function mostrarMensagem() {
-  mensagem.innerHTML = `<div class="parabens">🎉 Parabéns! Feliz Aniversário. Que seu dia seja tão lindo como tu 🎂</div>`;
+function mostrarMensagem(){
+  mensagem.innerHTML=`<div class="parabens">🎉 Parabéns! Feliz Aniversário. Que seu dia seja tão lindo como tu 🎂</div>`;
 }
 
-// Remover membro
-function remover(index) {
+function remover(index){
   membros.splice(index,1);
   localStorage.setItem('membros', JSON.stringify(membros));
   renderizar();
@@ -45,23 +54,25 @@ function remover(index) {
 
 renderizar();
 
-// Notificações às 9h
-function agendarNotificacao() {
-  if(Notification.permission !== "granted") Notification.requestPermission();
+// Notificações 9h
+function agendarNotificacao(){
+  if(Notification.permission!=="granted") Notification.requestPermission();
   const agora = new Date();
   const hora9 = new Date(); hora9.setHours(9,0,0,0);
   let tempo = hora9 - agora;
-  if(tempo<0) tempo += 24*60*60*1000;
-  setTimeout(() => { renderizar(); setInterval(renderizar,24*60*60*1000); }, tempo);
+  if(tempo<0) tempo+=24*60*60*1000;
+  setTimeout(()=>{ renderizar(); setInterval(renderizar,24*60*60*1000); }, tempo);
 }
 agendarNotificacao();
 
 // PWA Install
 let deferredPrompt;
 const installBtn = document.getElementById('installBtn');
-window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt=e; installBtn.style.display='block'; });
-installBtn.addEventListener('click', async () => { installBtn.style.display='none'; if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt=null; } });
+window.addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); deferredPrompt=e; installBtn.style.display='block'; });
+installBtn.addEventListener('click', async ()=>{
+  installBtn.style.display='none';
+  if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt=null; }
+});
 
 // Service Worker
-if('serviceWorker' in navigator){ navigator.serviceWorker.register('service-worker.js').then(()=>console.log("✅ Service Worker registado!")); }
-
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('service-worker.js').then(()=>console.log("✅ SW registado")); }
