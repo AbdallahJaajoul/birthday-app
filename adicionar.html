@@ -5,35 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Adicionar Membros</title>
 <style>
-  body {
-    font-family: Arial;
-    padding: 20px;
-    background: #f4f4f9;
-  }
-  h2 { text-align: center; color: #4CAF50; }
-  form, .members-list { max-width: 400px; margin: auto; }
-  input, button { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 6px; border: 1px solid #ccc; }
-  button { background: #4CAF50; color: white; border: none; cursor: pointer; }
-  button:hover { background: #45a049; }
-  ul { list-style: none; padding: 0; }
-  li { background: white; padding: 8px; margin-bottom: 8px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
-  li button { background: red; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; }
-  li button:hover { background: darkred; }
+body { font-family: Arial; padding:20px; background:#f4f4f9; }
+h2 { text-align:center; color:#4CAF50; }
+form { display:flex; flex-direction:column; gap:10px; max-width:400px; margin:0 auto; }
+input, button { padding:10px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
+button { background:#4CAF50; color:white; border:none; cursor:pointer; }
+button:hover { background:#45a049; }
+ul { list-style:none; padding:0; margin-top:20px; }
+li { background:white; padding:8px; margin-bottom:5px; border-radius:6px; display:flex; justify-content:space-between; align-items:center; }
+li button { background:red; color:white; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; }
+li button:hover { background:darkred; }
 </style>
 </head>
 <body>
 
-<h2>🎂 Adicionar Membros</h2>
-
+<h2>Adicionar Membros</h2>
 <form id="formAdicionar">
   <input type="text" id="nome" placeholder="Nome do membro" required>
   <input type="date" id="data" required>
-  <input type="text" id="codigo" placeholder="Código do usuário" required>
+  <input type="text" id="codigo" placeholder="Código do usuário (user1-user25)" required>
   <button type="submit">Adicionar</button>
 </form>
-
-<h3>Lista de membros</h3>
-<ul class="members-list" id="listaMembros"></ul>
+<ul id="listaMembros"></ul>
 
 <script src="js/adicionar.js"></script>
 </body>
