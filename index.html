@@ -93,7 +93,6 @@
     <input type="text" id="nome" placeholder="Nome do membro" required>
     <input type="date" id="data" required>
     <button type="submit">Adicionar</button>
-    <button type="install">instalar App</button>
   </form>
   <ul class="members-list" id="lista"></ul>
   <button id="installBtn" style="display:none;">Instalar App</button>
@@ -161,24 +160,26 @@
   }
 
   // PWA Install
-  let deferredPrompt;
-  const installBtn = document.getElementById('installBtn');
+let deferredPrompt;
+const installBtn = document.getElementById('installBtn');
 
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    installBtn.style.display = 'block';
-  });
+// Evento disparado quando a PWA pode ser instalada
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();            // Impede o prompt automático
+  deferredPrompt = e;            // Salva o evento
+  installBtn.style.display = 'block'; // Mostra o botão
+});
 
-  installBtn.addEventListener('click', async () => {
-    installBtn.style.display = 'none';
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(choiceResult => {
-        deferredPrompt = null;
-      });
-    }
-  });
+// Clique no botão para instalar
+installBtn.addEventListener('click', async () => {
+  installBtn.style.display = 'none'; // Esconde o botão
+  if (deferredPrompt) {
+    deferredPrompt.prompt();         // Mostra o prompt do navegador
+    const choice = await deferredPrompt.userChoice;
+    deferredPrompt = null;           // Limpa o evento
+  }
+});
+
 
   // Notificações
   function mostrarNotificacao() {
