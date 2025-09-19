@@ -3,77 +3,121 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Minha PWA</title>
+  <title>Lembrete de Aniversários</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4CAF50">
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      padding: 20px;
       background: #f4f4f9;
-      text-align: center;
+      color: #333;
     }
     h1 {
+      text-align: center;
       color: #4CAF50;
-      margin-bottom: 10px;
     }
-    p {
-      margin-bottom: 20px;
-      color: #333;
+    form {
+      margin: 20px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
     button {
       background: #4CAF50;
       color: white;
       border: none;
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-size: 16px;
       cursor: pointer;
-      transition: background 0.3s;
     }
     button:hover {
       background: #45a049;
     }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: white;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .parabens {
+      background: #ffeb3b;
+      font-weight: bold;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 8px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
-  <h1>🚀 Bem-vindo à Minha PWA!</h1>
-  <p>Podes instalar esta app no teu telemóvel Android ou iPhone.</p>
-  <button id="installBtn" style="display:none;">📲 Instalar App</button>
+  <h1>🎂 Lembrete de Aniversários</h1>
+
+  <form id="form">
+    <input type="text" id="nome" placeholder="Nome do membro" required>
+    <input type="date" id="data" required>
+    <button type="submit">Adicionar</button>
+  </form>
+
+  <div id="mensagem"></div>
+  <ul id="lista"></ul>
 
   <script>
-    let deferredPrompt;
-    const installBtn = document.getElementById('installBtn');
+    const form = document.getElementById('form');
+    const lista = document.getElementById('lista');
+    const mensagem = document.getElementById('mensagem');
+    let membros = JSON.parse(localStorage.getItem('membros')) || [];
 
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      installBtn.style.display = 'block';
-    });
+    // Renderiza lista
+    function renderizar() {
+      lista.innerHTML = "";
+      const hoje = new Date().toISOString().slice(5, 10); // MM-DD
+      let aniversarianteHoje = false;
 
-    installBtn.addEventListener('click', async () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const choice = await deferredPrompt.userChoice;
-        if (choice.outcome === 'accepted') {
-          console.log('✅ App instalada');
+      membros.forEach((membro, i) => {
+        const li = document.createElement('li');
+        li.textContent = `${membro.nome} - ${membro.data}`;
+        lista.appendChild(li);
+
+        if (membro.data.slice(5) === hoje) {
+          aniversarianteHoje = true;
         }
-        deferredPrompt = null;
-        installBtn.style.display = 'none';
+      });
+
+      if (aniversarianteHoje) {
+        mensagem.innerHTML = `<div class="parabens">🎉 Parabéns! Feliz Aniversário. Que seu dia seja tão lindo como tu 🎂</div>`;
+      } else {
+        mensagem.innerHTML = "";
       }
+    }
+
+    // Adiciona membro
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nome = document.getElementById('nome').value;
+      const data = document.getElementById('data').value;
+      membros.push({ nome, data });
+      localStorage.setItem('membros', JSON.stringify(membros));
+      form.reset();
+      renderizar();
     });
+
+    renderizar();
 
     // Registo do Service Worker
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('✅ Service Worker registado!'))
-        .catch(err => console.log('❌ Erro no Service Worker:', err));
+        .then(() => console.log("✅ Service Worker registado!"));
     }
   </script>
 </body>
