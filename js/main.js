@@ -11,6 +11,19 @@ btnAdicionar.addEventListener('click', () => { window.location.href = 'adicionar
 // Lista de membros carregada de Google Sheets ou JSON local
 let membros = JSON.parse(localStorage.getItem('membros')) || [];
 
+async function carregarMembros() {
+  const response = await fetch(https://docs.google.com/spreadsheets/d/e/2PACX-1vR8Yp0pNMXgszbkbWlrDd6XL6wWQ4K18I1JTu0hCqKiQ_1DdWeLdFdbTTVfUK5GsjUpRPdOmjU2Kw0f/pub?gid=0&single=true&output=csv);
+  const data = await response.json();
+  membros = data.feed.entry.map(entry => ({
+    codigo: entry.gsx$codigo.$t,
+    nome: entry.gsx$nome.$t,
+    data: entry.gsx$data.$t
+  }));
+  renderizar();
+}
+
+carregarMembros();
+
 // Renderiza aniversários filtrados para este usuário
 function renderizar() {
   lista.innerHTML = '';
