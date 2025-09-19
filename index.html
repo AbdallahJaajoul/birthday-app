@@ -1,124 +1,160 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lembrete de Aniversários</title>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#4CAF50">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: #f4f4f9;
-      color: #333;
-    }
-    h1 {
-      text-align: center;
-      color: #4CAF50;
-    }
-    form {
-      margin: 20px 0;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    input, button {
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    button {
-      background: #4CAF50;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #45a049;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-    li {
-      background: white;
-      padding: 10px;
-      margin: 5px 0;
-      border-radius: 6px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    .parabens {
-      background: #ffeb3b;
-      font-weight: bold;
-      padding: 15px;
-      margin: 20px 0;
-      border-radius: 8px;
-      text-align: center;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lembrete de Aniversários</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4CAF50">
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+    background: #f4f4f9;
+  }
+  /* Sidebar */
+  .sidebar {
+    width: 280px;
+    background: #4CAF50;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .sidebar h2 {
+    margin-top: 0;
+    text-align: center;
+  }
+  .sidebar input, .sidebar button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: none;
+  }
+  .sidebar button {
+    background: #45a049;
+    color: white;
+    cursor: pointer;
+  }
+  .sidebar button:hover {
+    background: #3b8a3b;
+  }
+  .members-list {
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+  .members-list li {
+    background: white;
+    color: #333;
+    margin-bottom: 8px;
+    padding: 8px;
+    border-radius: 6px;
+    list-style: none;
+  }
+  /* Main content */
+  .main {
+    flex-grow: 1;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .parabens {
+    background: #ffeb3b;
+    font-weight: bold;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 8px;
+    text-align: center;
+  }
+</style>
 </head>
 <body>
-  <h1>🎂 Lembrete de Aniversários</h1>
 
+<div class="sidebar">
+  <h2>🎂 Aniversários</h2>
   <form id="form">
     <input type="text" id="nome" placeholder="Nome do membro" required>
     <input type="date" id="data" required>
     <button type="submit">Adicionar</button>
   </form>
+  <ul class="members-list" id="lista"></ul>
+  <button id="installBtn" style="display:none;">Instalar App</button>
+</div>
 
+<div class="main">
   <div id="mensagem"></div>
-  <ul id="lista"></ul>
+</div>
 
-  <script>
-    const form = document.getElementById('form');
-    const lista = document.getElementById('lista');
-    const mensagem = document.getElementById('mensagem');
-    let membros = JSON.parse(localStorage.getItem('membros')) || [];
+<script>
+  let membros = JSON.parse(localStorage.getItem('membros')) || [];
+  const form = document.getElementById('form');
+  const lista = document.getElementById('lista');
+  const mensagem = document.getElementById('mensagem');
 
-    // Renderiza lista
-    function renderizar() {
-      lista.innerHTML = "";
-      const hoje = new Date().toISOString().slice(5, 10); // MM-DD
-      let aniversarianteHoje = false;
+  function renderizar() {
+    lista.innerHTML = '';
+    const hoje = new Date().toISOString().slice(5,10); // MM-DD
+    let aniversarianteHoje = false;
 
-      membros.forEach((membro, i) => {
-        const li = document.createElement('li');
-        li.textContent = `${membro.nome} - ${membro.data}`;
-        lista.appendChild(li);
+    membros.forEach((membro) => {
+      const li = document.createElement('li');
+      li.textContent = `${membro.nome} - ${membro.data}`;
+      lista.appendChild(li);
 
-        if (membro.data.slice(5) === hoje) {
-          aniversarianteHoje = true;
-        }
-      });
-
-      if (aniversarianteHoje) {
-        mensagem.innerHTML = `<div class="parabens">🎉 Parabéns! Feliz Aniversário. Que seu dia seja tão lindo como tu 🎂</div>`;
-      } else {
-        mensagem.innerHTML = "";
+      if (membro.data.slice(5) === hoje) {
+        aniversarianteHoje = true;
       }
-    }
-
-    // Adiciona membro
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const nome = document.getElementById('nome').value;
-      const data = document.getElementById('data').value;
-      membros.push({ nome, data });
-      localStorage.setItem('membros', JSON.stringify(membros));
-      form.reset();
-      renderizar();
     });
 
-    renderizar();
-
-    // Registo do Service Worker
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log("✅ Service Worker registado!"));
+    if (aniversarianteHoje) {
+      mensagem.innerHTML = `<div class="parabens">🎉 Parabéns! Feliz Aniversário. Que seu dia seja tão lindo como tu 🎂</div>`;
+    } else {
+      mensagem.innerHTML = '';
     }
-  </script>
+  }
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const nome = document.getElementById('nome').value;
+    const data = document.getElementById('data').value;
+    membros.push({nome, data});
+    localStorage.setItem('membros', JSON.stringify(membros));
+    form.reset();
+    renderizar();
+  });
+
+  renderizar();
+
+  // Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(() => console.log("✅ Service Worker registado!"));
+  }
+
+  // PWA Install
+  let deferredPrompt;
+  const installBtn = document.getElementById('installBtn');
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = 'block';
+  });
+
+  installBtn.addEventListener('click', async () => {
+    installBtn.style.display = 'none';
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log(`Instalação: ${outcome}`);
+      deferredPrompt = null;
+    }
+  });
+</script>
+
 </body>
 </html>
