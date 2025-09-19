@@ -1,0 +1,13 @@
+meu-pwa/
+├─ index.html
+├─ adicionar.html
+├─ manifest.json
+├─ service-worker.js
+├─ js/
+│   ├─ main.js
+│   └─ adicionar.js
+├─ icons/
+│   ├─ android-chrome-192x192-png-6.png
+│   └─ android-chrome-512x512.png
+├─ images/
+│   └─ photocall-template-birthday-party-celebration_23-2150245176.jpg
