@@ -6,6 +6,11 @@
 <title>Lembrete de Aniversários</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#4CAF50">
+
+<!-- Ícones -->
+<link rel="icon" type="image/png" sizes="192x192" href="icons/android-chrome-192x192-png-6.png">
+<link rel="apple-touch-icon" href="icons/android-chrome-192x192-png-6.png">
+
 <style>
   body {
     margin: 0;
@@ -160,33 +165,30 @@
   }
 
   // PWA Install
-let deferredPrompt;
-const installBtn = document.getElementById('installBtn');
+  let deferredPrompt;
+  const installBtn = document.getElementById('installBtn');
 
-// Evento disparado quando a PWA pode ser instalada
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();            // Impede o prompt automático
-  deferredPrompt = e;            // Salva o evento
-  installBtn.style.display = 'block'; // Mostra o botão
-});
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = 'block';
+  });
 
-// Clique no botão para instalar
-installBtn.addEventListener('click', async () => {
-  installBtn.style.display = 'none'; // Esconde o botão
-  if (deferredPrompt) {
-    deferredPrompt.prompt();         // Mostra o prompt do navegador
-    const choice = await deferredPrompt.userChoice;
-    deferredPrompt = null;           // Limpa o evento
-  }
-});
-
+  installBtn.addEventListener('click', async () => {
+    installBtn.style.display = 'none';
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const choice = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+    }
+  });
 
   // Notificações
   function mostrarNotificacao() {
     if ("Notification" in window && Notification.permission === "granted") {
       new Notification("🎉 Feliz Aniversário!", {
         body: "Que seu dia seja tão lindo como tu!",
-        icon: "icons/icon-192.png"
+        icon: "icons/android-chrome-192x192-png-6.png"
       });
     }
   }
@@ -199,7 +201,7 @@ installBtn.addEventListener('click', async () => {
     const hora10 = new Date();
     hora10.setHours(10,0,0,0);
     let tempo = hora10 - agora;
-    if (tempo < 0) tempo += 24*60*60*1000; // se já passou, agenda para amanhã
+    if (tempo < 0) tempo += 24*60*60*1000; // agenda para amanhã
     setTimeout(() => {
       renderizar();
       setInterval(renderizar, 24*60*60*1000); // a cada 24h
