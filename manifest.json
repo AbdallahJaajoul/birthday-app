@@ -1,6 +1,6 @@
 {
-  "name": "Minha PWA",
-  "short_name": "PWA",
+  "name": "Lembrete de Aniversários",
+  "short_name": "Aniversários",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
