@@ -1,0 +1,7 @@
+meu-projeto-pwa/
+├─ index.html
+├─ manifest.json
+├─ service-worker.js
+└─ icons/
+   ├─ android-chrome-192x192-png-6.png
+   └─ android-chrome-512x512.png
