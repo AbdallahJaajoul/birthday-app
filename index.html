@@ -6,210 +6,40 @@
 <title>Lembrete de Aniversários</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#4CAF50">
-
-<!-- Ícones -->
 <link rel="icon" type="image/png" sizes="192x192" href="icons/android-chrome-192x192-png-6.png">
 <link rel="apple-touch-icon" href="icons/android-chrome-192x192-png-6.png">
-
 <style>
   body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    display: flex;
-    height: 100vh;
-    background: #f4f4f9;
+    margin:0; font-family:Arial; display:flex; height:100vh;
+    background:url('images/photocall-template-birthday-party-celebration_23-2150245176.jpg') no-repeat center/cover;
   }
-  /* Sidebar */
   .sidebar {
-    width: 280px;
-    background: #4CAF50;
-    color: white;
-    padding: 20px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    width:280px; background:#4CAF50; color:white; padding:20px; display:flex; flex-direction:column; gap:20px;
   }
-  .sidebar h2 {
-    margin-top: 0;
-    text-align: center;
-  }
-  .sidebar input, .sidebar button {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 6px;
-    border: none;
-  }
-  .sidebar button {
-    background: #45a049;
-    color: white;
-    cursor: pointer;
-  }
-  .sidebar button:hover {
-    background: #3b8a3b;
-  }
-  .members-list {
-    flex-grow: 1;
-    overflow-y: auto;
-  }
-  .members-list li {
-    background: white;
-    color: #333;
-    margin-bottom: 8px;
-    padding: 8px;
-    border-radius: 6px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .members-list li button {
-    background: red;
-    color: white;
-    border: none;
-    padding: 4px 8px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  .members-list li button:hover {
-    background: darkred;
-  }
-  /* Main content */
-  .main {
-    flex-grow: 1;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-  .parabens {
-    background: #ffeb3b;
-    font-weight: bold;
-    padding: 15px;
-    margin: 20px 0;
-    border-radius: 8px;
-    text-align: center;
-  }
+  .sidebar h2 { text-align:center; margin:0; }
+  .sidebar button { padding:10px; border:none; border-radius:6px; cursor:pointer; background:#45a049; color:white; }
+  .sidebar button:hover { background:#3b8a3b; }
+  .members-list { flex-grow:1; overflow-y:auto; }
+  .members-list li { background:white; color:#333; margin-bottom:8px; padding:8px; border-radius:6px; display:flex; justify-content:space-between; align-items:center; }
+  .members-list li button { background:red; color:white; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; }
+  .members-list li button:hover { background:darkred; }
+  .main { flex-grow:1; padding:20px; box-sizing:border-box; }
+  .parabens { background:#ffeb3b; font-weight:bold; padding:15px; margin:20px 0; border-radius:8px; text-align:center; }
 </style>
 </head>
 <body>
 
 <div class="sidebar">
   <h2>🎂 Aniversários Redes24</h2>
-  <form id="form">
-    <input type="text" id="nome" placeholder="Nome do membro" required>
-    <input type="date" id="data" required>
-    <button type="submit">Adicionar</button>
-  </form>
-  <ul class="members-list" id="lista"></ul>
   <button id="installBtn" style="display:none;">Instalar App</button>
+  <button id="btnAdicionar">🎂 Adicionar Membros</button>
+  <ul class="members-list" id="lista"></ul>
 </div>
 
 <div class="main">
   <div id="mensagem"></div>
 </div>
 
-<script>
-  let membros = JSON.parse(localStorage.getItem('membros')) || [];
-  const form = document.getElementById('form');
-  const lista = document.getElementById('lista');
-  const mensagem = document.getElementById('mensagem');
-
-  function renderizar() {
-    lista.innerHTML = '';
-    const hoje = new Date().toISOString().slice(5,10); // MM-DD
-    let aniversarianteHoje = false;
-
-    membros.forEach((membro, i) => {
-      const li = document.createElement('li');
-      li.innerHTML = `${membro.nome} - ${membro.data} <button onclick="remover(${i})">❌</button>`;
-      lista.appendChild(li);
-
-      if (membro.data.slice(5) === hoje) {
-        aniversarianteHoje = true;
-      }
-    });
-
-    if (aniversarianteHoje) {
-      mostrarMensagem();
-      mostrarNotificacao();
-    } else {
-      mensagem.innerHTML = '';
-    }
-  }
-
-  function mostrarMensagem() {
-    mensagem.innerHTML = `<div class="parabens">🎉 Parabéns! Feliz Aniversário. Que seu dia seja tão lindo como tu 🎂</div>`;
-  }
-
-  function remover(index) {
-    membros.splice(index,1);
-    localStorage.setItem('membros', JSON.stringify(membros));
-    renderizar();
-  }
-
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const nome = document.getElementById('nome').value;
-    const data = document.getElementById('data').value;
-    membros.push({nome, data});
-    localStorage.setItem('membros', JSON.stringify(membros));
-    form.reset();
-    renderizar();
-  });
-
-  renderizar();
-
-  // Service Worker
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js')
-      .then(() => console.log("✅ Service Worker registado!"));
-  }
-
-  // PWA Install
-  let deferredPrompt;
-  const installBtn = document.getElementById('installBtn');
-
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    installBtn.style.display = 'block';
-  });
-
-  installBtn.addEventListener('click', async () => {
-    installBtn.style.display = 'none';
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const choice = await deferredPrompt.userChoice;
-      deferredPrompt = null;
-    }
-  });
-
-  // Notificações
-  function mostrarNotificacao() {
-    if ("Notification" in window && Notification.permission === "granted") {
-      new Notification("🎉 Feliz Aniversário!", {
-        body: "Que seu dia seja tão lindo como tu!",
-        icon: "icons/android-chrome-192x192-png-6.png"
-      });
-    }
-  }
-
-  function agendarNotificacaoDiaria() {
-    if ("Notification" in window && Notification.permission !== "denied") {
-      Notification.requestPermission();
-    }
-    const agora = new Date();
-    const hora10 = new Date();
-    hora10.setHours(10,0,0,0);
-    let tempo = hora10 - agora;
-    if (tempo < 0) tempo += 24*60*60*1000; // agenda para amanhã
-    setTimeout(() => {
-      renderizar();
-      setInterval(renderizar, 24*60*60*1000); // a cada 24h
-    }, tempo);
-  }
-
-  agendarNotificacaoDiaria();
-</script>
-
+<script src="js/main.js"></script>
 </body>
 </html>
