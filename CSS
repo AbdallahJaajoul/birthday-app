@@ -1,0 +1,10 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  height: 100vh;
+  background-image: url('images/photocall-template-birthday-party-celebration_23-2150245176.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
