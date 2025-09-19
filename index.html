@@ -54,7 +54,20 @@
     margin-bottom: 8px;
     padding: 8px;
     border-radius: 6px;
-    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .members-list li button {
+    background: red;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .members-list li button:hover {
+    background: darkred;
   }
   /* Main content */
   .main {
@@ -95,14 +108,15 @@
   const lista = document.getElementById('lista');
   const mensagem = document.getElementById('mensagem');
 
+  // Renderiza a lista e verifica aniversariantes
   function renderizar() {
     lista.innerHTML = '';
     const hoje = new Date().toISOString().slice(5,10); // MM-DD
     let aniversarianteHoje = false;
 
-    membros.forEach((membro) => {
+    membros.forEach((membro, i) => {
       const li = document.createElement('li');
-      li.textContent = `${membro.nome} - ${membro.data}`;
+      li.innerHTML = `${membro.nome} - ${membro.data} <button onclick="remover(${i})">❌</button>`;
       lista.appendChild(li);
 
       if (membro.data.slice(5) === hoje) {
@@ -111,10 +125,21 @@
     });
 
     if (aniversarianteHoje) {
-      mensagem.innerHTML = `<div class="parabens">🎉 Parabéns! Feliz Aniversário. Que seu dia seja tão lindo como tu 🎂</div>`;
+      mostrarMensagem();
+      mostrarNotificacao();
     } else {
       mensagem.innerHTML = '';
     }
+  }
+
+  function mostrarMensagem() {
+    mensagem.innerHTML = `<div class="parabens">🎉 Parabéns! Feliz Aniversário. Que seu dia seja tão lindo como tu 🎂</div>`;
+  }
+
+  function remover(index) {
+    membros.splice(index,1);
+    localStorage.setItem('membros', JSON.stringify(membros));
+    renderizar();
   }
 
   form.addEventListener('submit', e => {
@@ -149,11 +174,39 @@
     installBtn.style.display = 'none';
     if (deferredPrompt) {
       deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      console.log(`Instalação: ${outcome}`);
-      deferredPrompt = null;
+      deferredPrompt.userChoice.then(choiceResult => {
+        deferredPrompt = null;
+      });
     }
   });
+
+  // Notificações
+  function mostrarNotificacao() {
+    if ("Notification" in window && Notification.permission === "granted") {
+      new Notification("🎉 Feliz Aniversário!", {
+        body: "Que seu dia seja tão lindo como tu!",
+        icon: "icons/icon-192.png"
+      });
+    }
+  }
+
+  function agendarNotificacaoDiaria() {
+    if ("Notification" in window && Notification.permission !== "denied") {
+      Notification.requestPermission();
+    }
+    const agora = new Date();
+    const hora10 = new Date();
+    hora10.setHours(10,0,0,0);
+    let tempo = hora10 - agora;
+    if (tempo < 0) tempo += 24*60*60*1000; // se já passou, agenda para amanhã
+    setTimeout(() => {
+      renderizar();
+      setInterval(renderizar, 24*60*60*1000); // a cada 24h
+    }, tempo);
+  }
+
+  agendarNotificacaoDiaria();
+
 </script>
 
 </body>
