@@ -3,6 +3,5 @@ self.addEventListener("install", event => {
 });
 
 self.addEventListener("fetch", event => {
-  // Aqui poderias adicionar cache offline
-  console.log("🔎 Requisição:", event.request.url);
+  event.respondWith(fetch(event.request));
 });
