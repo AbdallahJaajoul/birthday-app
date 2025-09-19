@@ -7,13 +7,14 @@ self.addEventListener('install', e => {
       '/adicionar.html',
       '/js/main.js',
       '/js/adicionar.js',
-      '/manifest.json'
+      '/manifest.json',
+      '/membros.json'
     ]))
   );
 });
 
 self.addEventListener('fetch', e => {
   e.respondWith(
-    caches.match(e.request).then(response => response || fetch(e.request))
+    caches.match(e.request).then(res => res || fetch(e.request))
   );
 });
