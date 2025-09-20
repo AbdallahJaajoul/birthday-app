@@ -1,15 +1,16 @@
 body {
-  margin: 0;
   font-family: Arial, sans-serif;
-  background: #f0f0f0;
-  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100vh;
+  margin: 0;
+  background: url("https://github.com/AbdallahJaajoul/meu-projeto-pwa/blob/main/photocall-template-birthday-party-celebration_23-2150245176.jpg?raw=true") no-repeat center center;
+  background-size: cover;
 }
 
 .login-box {
-  background: rgba(255,255,255,0.95);
+  background: rgba(255,255,255,0.9);
   padding: 20px;
   border-radius: 12px;
   width: 300px;
@@ -17,48 +18,61 @@ body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
-.login-box input {
-  display: block;
+input {
   width: 100%;
   padding: 10px;
-  margin: 10px 0;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: 1px solid #aaa;
+  font-size: 16px;
 }
 
-.login-box button {
+button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
   background: #4CAF50;
-  color: white;
   border: none;
-  padding: 10px;
-  border-radius: 6px;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
   cursor: pointer;
-  width: 100%;
 }
 
-.login-box button:hover {
+button:hover {
   background: #45a049;
 }
 
-.mensagem {
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #333;
-  text-align: center;
+.erro {
+  color: red;
+  margin-top: 10px;
 }
 
+.sucesso {
+  color: green;
+  margin-top: 10px;
+}
+
+.mensagem {
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+/* Responsivo - telemóvel */
 @media (max-width: 600px) {
   body {
     justify-content: flex-end; /* empurra para direita */
   }
   .login-box {
-    width: 100px; /* coluna fina */
+    width: 120px; /* coluna fina */
     height: 100vh;
     border-radius: 0;
     background: lightblue;
     position: fixed;
     right: 0;
     top: 0;
+    padding: 10px;
+    text-align: left;
   }
   .login-box h2, .login-box input, .login-box button {
     font-size: 0.8em;
