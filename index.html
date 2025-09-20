@@ -1,44 +1,126 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lembrete de Aniversários</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#4CAF50">
-<link rel="icon" href="icons/android-chrome-192x192.png">
-<style>
-body {
-  margin: 0; font-family: Arial; display: flex; height: 100vh;
-  background: url('https://raw.githubusercontent.com/AbdallahJaajoul/meu-projeto-pwa/main/photocall-template-birthday-party-celebration_23-2150245176.jpg') no-repeat center/cover;
-}
-.sidebar {
-  width: 280px; background:#4CAF50; color:white; padding:20px; display:flex; flex-direction:column; gap:20px;
-}
-.sidebar h2 { text-align:center; margin:0; }
-.sidebar button { padding:10px; border:none; border-radius:6px; cursor:pointer; background:#45a049; color:white; }
-.sidebar button:hover { background:#3b8a3b; }
-.members-list { flex-grow:1; overflow-y:auto; }
-.members-list li { background:white; color:#333; margin-bottom:8px; padding:8px; border-radius:6px; display:flex; justify-content:space-between; align-items:center; }
-.members-list li button { background:red; color:white; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; }
-.members-list li button:hover { background:darkred; }
-.main { flex-grow:1; padding:20px; box-sizing:border-box; }
-.parabens { background:#ffeb3b; font-weight:bold; padding:15px; margin:20px 0; border-radius:8px; text-align:center; }
-</style>
+  <meta charset="UTF-8">
+  <title>Login - Minha App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: url("https://github.com/AbdallahJaajoul/meu-projeto-pwa/blob/main/photocall-template-birthday-party-celebration_23-2150245176.jpg?raw=true") no-repeat center center;
+      background-size: cover;
+    }
+    .login-box {
+      background: rgba(255,255,255,0.9);
+      padding: 20px;
+      border-radius: 12px;
+      width: 300px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: 1px solid #aaa;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background: #4CAF50;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    .erro {
+      color: red;
+      margin-top: 10px;
+    }
+    .sucesso {
+      color: green;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
+  <div class="login-box" id="loginBox">
+    <h2>Login</h2>
+    <input type="text" id="nome" placeholder="Nome">
+    <input type="text" id="codigo" placeholder="Código">
+    <button onclick="fazerLogin()">Entrar</button>
+    <div id="mensagem"></div>
+  </div>
 
-<div class="sidebar">
-  <h2>🎂 Aniversários</h2>
-  <button id="installBtn" style="display:none;">Instalar App</button>
-  <button id="btnAdicionar">🎂 Adicionar Membros</button>
-  <ul class="members-list" id="lista"></ul>
-</div>
+  <div class="login-box" id="appBox" style="display:none;">
+    <h2>Bem-vindo 🎉</h2>
+    <p id="userInfo"></p>
+    <button onclick="logout()">Sair</button>
+  </div>
 
-<div class="main">
-  <div id="mensagem"></div>
-</div>
+  <script>
+    // 🔑 Configuração dos utilizadores válidos (podes editar aqui)
+    const utilizadores = [
+      { nome: "Abdallah Jaajoul", codigo: "1234" },
+      { nome: "Siba jaajoul", codigo: "5678" },
+      { nome: "Raghad Jaajoul", codigo: "9999" }
+    ];
 
-<script src="js/main.js"></script>
+    function fazerLogin() {
+      const nome = document.getElementById("nome").value.trim();
+      const codigo = document.getElementById("codigo").value.trim();
+      const mensagem = document.getElementById("mensagem");
+
+      // verifica se existe utilizador com esse nome e código
+      const valido = utilizadores.find(u => 
+        u.nome.toLowerCase() === nome.toLowerCase() && u.codigo === codigo
+      );
+
+      if (valido) {
+        mensagem.innerHTML = "<p class='sucesso'>Login com sucesso!</p>";
+        // guardar sessão
+        localStorage.setItem("user", JSON.stringify(valido));
+        mostrarApp(valido);
+      } else {
+        mensagem.innerHTML = "<p class='erro'>Nome ou código inválido!</p>";
+      }
+    }
+
+    function mostrarApp(user) {
+      document.getElementById("loginBox").style.display = "none";
+      document.getElementById("appBox").style.display = "block";
+      document.getElementById("userInfo").textContent = 
+        "Olá, " + user.nome + "! O teu código é " + user.codigo;
+    }
+
+    function logout() {
+      localStorage.removeItem("user");
+      document.getElementById("loginBox").style.display = "block";
+      document.getElementById("appBox").style.display = "none";
+      document.getElementById("nome").value = "";
+      document.getElementById("codigo").value = "";
+      document.getElementById("mensagem").innerHTML = "";
+    }
+
+    // manter sessão se já estiver logado
+    window.onload = () => {
+      const user = localStorage.getItem("user");
+      if (user) {
+        mostrarApp(JSON.parse(user));
+      }
+    };
+  </script>
 </body>
 </html>
