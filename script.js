@@ -88,20 +88,50 @@ function backToMain() {
 
 // Guardar foto localmente
 function savePhoto(event) {
-  const file = event.target.files[0];
-  if (file) {
+  const files = event.target.files;
+  const container = document.getElementById("saved-photo");
+  container.innerHTML = "";
+
+  Array.from(files).forEach((file, index) => {
     const reader = new FileReader();
     reader.onload = function(e) {
       const img = document.createElement("img");
       img.src = e.target.result;
-      img.style.maxWidth = "300px";
-      document.getElementById("saved-photo").innerHTML = "";
-      document.getElementById("saved-photo").appendChild(img);
-      localStorage.setItem("savedPhoto", e.target.result);
+      img.style.maxWidth = "150px";
+      img.style.margin = "10px";
+      img.style.cursor = "pointer";
+      img.onclick = () => openPreview(e.target.result);
+      container.appendChild(img);
+
+      // Guardar todas as imagens
+      let saved = JSON.parse(localStorage.getItem("savedPhotos") || "[]");
+      saved.push(e.target.result);
+      localStorage.setItem("savedPhotos", JSON.stringify(saved));
     };
     reader.readAsDataURL(file);
-  }
+  });
 }
+
+// Abrir imagem em tamanho maior
+function openPreview(src) {
+  const win = window.open("", "_blank");
+  win.document.write(`<img src="${src}" style="width:100%">`);
+}
+
+// Carregar imagens guardadas ao iniciar
+window.onload = function() {
+  const saved = JSON.parse(localStorage.getItem("savedPhotos") || "[]");
+  const container = document.getElementById("saved-photo");
+  saved.forEach(src => {
+    const img = document.createElement("img");
+    img.src = src;
+    img.style.maxWidth = "150px";
+    img.style.margin = "10px";
+    img.style.cursor = "pointer";
+    img.onclick = () => openPreview(src);
+    container.appendChild(img);
+  });
+};
 
 // Carregar foto guardada ao iniciar
 window.onload = function() {
