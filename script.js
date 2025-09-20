@@ -11,7 +11,9 @@ function login() {
   const code = document.getElementById("code").value.trim();
   const error = document.getElementById("login-error");
 
-  if (users[name] === code) {
+  const normalizedName = name.toLowerCase();
+if (users[normalizedName] === code) {
+
     document.getElementById("login-box").style.display = "none";
     document.getElementById("main-content").style.display = "block";
     checkBirthdays();
