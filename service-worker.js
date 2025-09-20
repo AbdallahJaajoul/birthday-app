@@ -1,20 +1,23 @@
-self.addEventListener('install', e => {
-  console.log('Service Worker instalado');
+self.addEventListener('install', function(e) {
   e.waitUntil(
-    caches.open('v1').then(cache => cache.addAll([
-      '/',
-      '/index.html',
-      '/adicionar.html',
-      '/js/main.js',
-      '/js/adicionar.js',
-      '/manifest.json',
-      '/membros.json'
-    ]))
+    caches.open('birthday-app').then(function(cache) {
+      return cache.addAll([
+        './',
+        './index.html',
+        './style.css',
+        './script.js',
+        './manifest.json',
+        './assets/background-desktop.jpg',
+        './assets/background-mobile.jpg'
+      ]);
+    })
   );
 });
 
-self.addEventListener('fetch', e => {
+self.addEventListener('fetch', function(e) {
   e.respondWith(
-    caches.match(e.request).then(res => res || fetch(e.request))
+    caches.match(e.request).then(function(response) {
+      return response || fetch(e.request);
+    })
   );
 });
