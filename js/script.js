@@ -1,4 +1,4 @@
-// 🔑 Usuários válidos
+// Usuários válidos
 const usuarios = [
   { nome: "Abdallah Jaajoul", codigo: "user14" },
   { nome: "Siba jaajoul", codigo: "user24" },
@@ -8,20 +8,19 @@ const usuarios = [
 // Seletores
 const loginBox = document.getElementById("loginBox");
 const appBox = document.getElementById("appBox");
-const btnLogin = document.getElementById("btnLogin");
+const loginForm = document.getElementById("loginForm");
 const btnLogout = document.getElementById("btnLogout");
 const mensagem = document.getElementById("mensagem");
 const userInfo = document.getElementById("userInfo");
 
-// Função login
+// Login com Enter ou botão
 loginForm.addEventListener("submit", (e) => {
-  e.preventDefault();
+  e.preventDefault(); // Evita recarregar a página
+
   const nome = document.getElementById("nome").value.trim();
   const codigo = document.getElementById("codigo").value.trim();
 
-  const valido = usuarios.find(u => 
-    u.nome.toLowerCase() === nome.toLowerCase() && u.codigo === codigo
-  );
+  const valido = usuarios.find(u => u.nome.toLowerCase() === nome.toLowerCase() && u.codigo === codigo);
 
   if(valido) {
     localStorage.setItem("user", JSON.stringify(valido));
@@ -32,14 +31,14 @@ loginForm.addEventListener("submit", (e) => {
   }
 });
 
-// Função para mostrar app
+// Mostra app após login
 function mostrarApp(user) {
   loginBox.style.display = "none";
   appBox.style.display = "block";
   userInfo.textContent = `Olá, ${user.nome}! O teu código é ${user.codigo}`;
 }
 
-// Função logout
+// Logout
 btnLogout.addEventListener("click", () => {
   localStorage.removeItem("user");
   loginBox.style.display = "block";
