@@ -1,5 +1,5 @@
 const users = {
-  "Abdallah Jaajoul": "14",
+  "Abdallah": "14",
   "Siba Jaajoul": "user23",
   "Raghad Jaajoul": "user3"
 };
