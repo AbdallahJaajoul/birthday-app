@@ -1,69 +1,58 @@
-body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+body, html {
   margin: 0;
-  background: url("https://github.com/AbdallahJaajoul/meu-projeto-pwa/blob/main/photocall-template-birthday-party-celebration_23-2150245176.jpg?raw=true") no-repeat center center;
+  padding: 0;
+  font-family: sans-serif;
+  height: 100%;
+  overflow: hidden;
+}
+
+#background {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('assets/background-desktop.jpg');
   background-size: cover;
+  background-position: center;
 }
 
-.login-box {
-  background: rgba(255,255,255,0.95);
+@media (max-width: 768px) {
+  #background {
+    background-image: url('assets/background-mobile.jpg');
+  }
+}
+
+#login-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: lightblue;
   padding: 20px;
-  border-radius: 12px;
-  width: 300px;
+  border-radius: 10px;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
-.login-box input {
+#main-content, #photo-page {
+  position: absolute;
+  top: 0; left: 0;
   width: 100%;
-  padding: 10px;
-  margin: 8px 0;
-  border-radius: 8px;
-  border: 1px solid #aaa;
-  font-size: 16px;
-}
-
-.login-box button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  background: #4CAF50;
-  border: none;
-  border-radius: 8px;
+  height: 100%;
+  padding: 20px;
   color: white;
-  font-size: 16px;
+  background: rgba(0,0,0,0.5);
+}
+
+#header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#photo-button {
+  background: white;
+  color: black;
+  padding: 10px;
+  border-radius: 5px;
   cursor: pointer;
-}
-
-.login-box button:hover {
-  background: #45a049;
-}
-
-.erro {
-  color: red;
-  margin-top: 10px;
-}
-
-.sucesso {
-  color: green;
-  margin-top: 10px;
-}
-
-.mensagem {
-  font-size: 16px;
-  margin-top: 10px;
-}
-
-/* Responsivo - telemóvel */
-@media (max-width: 600px) {
-  body {
-    justify-content: center;
-  }
-  .login-box {
-    width: 90%;
-  }
 }
