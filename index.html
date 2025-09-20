@@ -1,29 +1,43 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Aniversários</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aplicação de Aniversários</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
 </head>
 <body>
+  <div id="background"></div>
 
-  <!-- Caixa de login -->
-  <div id="loginBox" class="login-box">
-    <h2>🎂 Login 🎂</h2>
-    <form id="loginForm">
-      <input type="text" id="nome" placeholder="Nome" required>
-      <input type="text" id="codigo" placeholder="Código" required>
-      <button type="submit">Entrar</button>
-    </form>
-    <div id="mensagem"></div>
+  <div id="login-box">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Nome" />
+    <input type="password" id="code" placeholder="Código" />
+    <button onclick="login()">Entrar</button>
+    <p id="login-error"></p>
   </div>
 
-  <!-- Caixa do app após login -->
-  <div id="appBox" class="login-box" style="display:none;">
-    <h2>🎉 Bem-vindo 🎉</h2>
-    <p id="userInfo"></p>
-    <button id="btnLogout">Sair</button>
+  <div id="main-content" style="display: none;">
+    <div id="header">
+      <h1>🎉 Bem-vindo!</h1>
+      <button id="photo-button" onclick="goToPhotoPage()">📷 Foto</button>
+    </div>
+
+    <div id="members-section">
+      <h2>Membros</h2>
+      <input type="text" id="member-name" placeholder="Nome do membro" />
+      <input type="date" id="member-date" />
+      <button onclick="addMember()">Adicionar Membro</button>
+      <ul id="member-list"></ul>
+    </div>
+  </div>
+
+  <div id="photo-page" style="display: none;">
+    <h2>📷 Inserir Foto</h2>
+    <input type="file" accept="image/*" onchange="savePhoto(event)" />
+    <div id="saved-photo"></div>
+    <button onclick="backToMain()">Voltar</button>
   </div>
 
   <script src="script.js"></script>
