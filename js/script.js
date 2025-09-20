@@ -14,7 +14,7 @@ const mensagem = document.getElementById("mensagem");
 const userInfo = document.getElementById("userInfo");
 
 // Função login
-btnLogin.addEventListener("click", () => {
+loginForm.addEventListener("submit", (e) => {
   const nome = document.getElementById("nome").value.trim();
   const codigo = document.getElementById("codigo").value.trim();
 
