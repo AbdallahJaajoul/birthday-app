@@ -2,125 +2,27 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8">
-  <title>Login - Minha App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      background: url("https://github.com/AbdallahJaajoul/meu-projeto-pwa/blob/main/photocall-template-birthday-party-celebration_23-2150245176.jpg?raw=true") no-repeat center center;
-      background-size: cover;
-    }
-    .login-box {
-      background: rgba(255,255,255,0.9);
-      padding: 20px;
-      border-radius: 12px;
-      width: 300px;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border-radius: 8px;
-      border: 1px solid #aaa;
-      font-size: 16px;
-    }
-    button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      background: #4CAF50;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #45a049;
-    }
-    .erro {
-      color: red;
-      margin-top: 10px;
-    }
-    .sucesso {
-      color: green;
-      margin-top: 10px;
-    }
-  </style>
+  <title>Login Aniversários</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="login-box" id="loginBox">
-    <h2>Login</h2>
+  <!-- Caixa de login -->
+  <div id="loginBox" class="login-box">
+    <h2>🎂 Login</h2>
     <input type="text" id="nome" placeholder="Nome">
     <input type="text" id="codigo" placeholder="Código">
-    <button onclick="fazerLogin()">Entrar</button>
+    <button id="btnLogin">Entrar</button>
     <div id="mensagem"></div>
   </div>
 
-  <div class="login-box" id="appBox" style="display:none;">
+  <!-- Caixa do app após login -->
+  <div id="appBox" class="login-box" style="display:none;">
     <h2>Bem-vindo 🎉</h2>
-    <p id="userinfo"></p>
-    <button onclick="logout()">Sair</button>
+    <p id="userInfo"></p>
+    <button id="btnLogout">Sair</button>
   </div>
 
-  <script>
-    // 🔑 Configuração dos utilizadores válidos (podes editar aqui)
-    const utilizadores = [
-      { nome: "Abdallah Jaajoul", codigo: "user14" },
-      { nome: "Siba jaajoul", codigo: "user24" },
-      { nome: "Raghad Jaajoul", codigo: "user3" }
-    ];
-
-    function fazerLogin() {
-      const nome = document.getElementById("nome").value.trim();
-      const codigo = document.getElementById("codigo").value.trim();
-      const mensagem = document.getElementById("mensagem");
-
-      // verifica se existe utilizador com esse nome e código
-      const valido = utilizadores.find(u => 
-        u.nome.toLowerCase() === nome.toLowerCase() && u.codigo === codigo
-      );
-
-      if (valido) {
-        mensagem.innerHTML = "<p class='sucesso'>Login com sucesso!</p>";
-        // guardar sessão
-        localStorage.setItem("user", JSON.stringify(valido));
-        mostrarApp(valido);
-      } else {
-        mensagem.innerHTML = "<p class='erro'>Nome ou código inválido!</p>";
-      }
-    }
-
-    function mostrarApp(user) {
-      document.getElementById("loginBox").style.display = "none";
-      document.getElementById("appBox").style.display = "block";
-      document.getElementById("userInfo").textContent = 
-        "Olá, " + user.nome + "! O teu código é " + user.codigo;
-    }
-
-    function logout() {
-      localStorage.removeItem("user");
-      document.getElementById("loginBox").style.display = "block";
-      document.getElementById("appBox").style.display = "none";
-      document.getElementById("nome").value = "";
-      document.getElementById("codigo").value = "";
-      document.getElementById("mensagem").innerHTML = "";
-    }
-
-    // manter sessão se já estiver logado
-    window.onload = () => {
-      const user = localStorage.getItem("user");
-      if (user) {
-        mostrarApp(JSON.parse(user));
-      }
-    };
- 
+  <script src="script.js"></script>
 </body>
 </html>
