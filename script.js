@@ -1,19 +1,21 @@
+// Lista de utilizadores com nome e código (em minúsculas)
 const users = {
-  "abdallah": "14",
-  "Siba Jaajoul": "user23",
-  "Raghad Jaajoul": "user3"
+  "abdallah jaajoul": "1234",
+  "maria": "5678",
+  "joao": "abcd"
 };
 
 let members = [];
+let currentUser = "";
 
+// Função de login
 function login() {
-  const name = document.getElementById("username").value.trim();
-  const code = document.getElementById("code").value.trim();
+  const nameInput = document.getElementById("username").value.trim().toLowerCase();
+  const codeInput = document.getElementById("code").value.trim();
   const error = document.getElementById("login-error");
 
-  const normalizedName = name.toLowerCase();
-if (users[normalizedName] === code) {
-
+  if (users[nameInput] === codeInput) {
+    currentUser = nameInput;
     document.getElementById("login-box").style.display = "none";
     document.getElementById("main-content").style.display = "block";
     checkBirthdays();
@@ -22,6 +24,7 @@ if (users[normalizedName] === code) {
   }
 }
 
+// Adicionar novo membro
 function addMember() {
   const name = document.getElementById("member-name").value.trim();
   const date = document.getElementById("member-date").value;
@@ -29,10 +32,10 @@ function addMember() {
   if (name && date) {
     members.push({ name, date });
     updateMemberList();
-    scheduleMessages(name, date);
   }
 }
 
+// Atualizar lista de membros com botão de remover
 function updateMemberList() {
   const list = document.getElementById("member-list");
   list.innerHTML = "";
@@ -53,35 +56,37 @@ function updateMemberList() {
   });
 }
 
-function scheduleMessages(name, date) {
-  const today = new Date().toISOString().slice(5, 10);
-  const birthDate = date.slice(5, 10);
-  if (today === birthDate) {
-    alert(`Parabéns! Feliz Aniversário. Que seu dia seja tão lindo como tu`);
-  } else {
-    alert(`Hoje o ${name} faz anos, Parabeniza`);
-  }
-}
-
+// Verifica aniversários e envia mensagens
 function checkBirthdays() {
-  const today = new Date().toISOString().slice(5, 10);
+  const today = new Date().toISOString().slice(5, 10); // formato MM-DD
+
   members.forEach(m => {
-    if (m.date.slice(5, 10) === today) {
-      alert(`Hoje o ${m.name} faz anos, Parabeniza`);
+    const memberName = m.name.trim().toLowerCase();
+    const birthDate = m.date.slice(5, 10);
+
+    if (birthDate === today) {
+      if (memberName === currentUser) {
+        alert(`Parabéns! Feliz Aniversário. Que seu dia seja tão lindo como tu`);
+      } else {
+        alert(`Hoje o ${m.name} faz anos, Parabeniza`);
+      }
     }
   });
 }
 
+// Navegar para página de fotos
 function goToPhotoPage() {
   document.getElementById("main-content").style.display = "none";
   document.getElementById("photo-page").style.display = "block";
 }
 
+// Voltar da página de fotos
 function backToMain() {
   document.getElementById("photo-page").style.display = "none";
   document.getElementById("main-content").style.display = "block";
 }
 
+// Guardar foto localmente
 function savePhoto(event) {
   const file = event.target.files[0];
   if (file) {
@@ -98,6 +103,7 @@ function savePhoto(event) {
   }
 }
 
+// Carregar foto guardada ao iniciar
 window.onload = function() {
   const saved = localStorage.getItem("savedPhoto");
   if (saved) {
