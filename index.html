@@ -35,7 +35,7 @@
 
   <div id="photo-page" style="display: none;">
     <h2>📷 Inserir Foto</h2>
-    <input type="file" accept="image/*" onchange="savePhoto(event)" />
+    <input type="file" accept="image/*" multiple onchange="savePhoto(event)" />
     <div id="saved-photo"></div>
     <button onclick="backToMain()">Voltar</button>
   </div>
