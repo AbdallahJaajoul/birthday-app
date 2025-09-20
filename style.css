@@ -61,20 +61,25 @@ button:hover {
 /* Responsivo - telemóvel */
 @media (max-width: 600px) {
   body {
-    justify-content: flex-end; /* empurra para direita */
+    display: block;
   }
+
   .login-box {
-    width: 120px; /* coluna fina */
-    height: 100vh;
-    border-radius: 0;
-    background: lightblue;
     position: fixed;
-    right: 0;
     top: 0;
+    right: 0;
+    height: 100vh;
+    width: 120px;
+    border-radius: 0;
+    background: #add8e6; /* azul-claro */
+    box-shadow: -2px 0 6px rgba(0,0,0,0.2);
     padding: 10px;
     text-align: left;
   }
-  .login-box h2, .login-box input, .login-box button {
-    font-size: 0.8em;
-  }
+}
+
+#mensagem {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
 }
