@@ -93,10 +93,19 @@ body, html {
   cursor: pointer;
 }
 
+#photo-page {
+  padding-left: 40px; /* afasta da esquerda */
+}
 /* Página de fotos */
 #saved-photo img {
-  margin-top: 20px;
-  max-width: 300px;
+  margin-top: 10px;
+  max-width: 150px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(255,255,255,0.5);
+    cursor: pointer;
+  transition: transform 0.2s;
+}
+
+#saved-photo img:hover {
+  transform: scale(1.05);
 }
