@@ -34,9 +34,19 @@ function addMember() {
 function updateMemberList() {
   const list = document.getElementById("member-list");
   list.innerHTML = "";
-  members.forEach(m => {
+
+  members.forEach((m, index) => {
     const li = document.createElement("li");
     li.textContent = `${m.name} - ${m.date}`;
+
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "❌ Remover";
+    removeBtn.onclick = () => {
+      members.splice(index, 1);
+      updateMemberList();
+    };
+
+    li.appendChild(removeBtn);
     list.appendChild(li);
   });
 }
