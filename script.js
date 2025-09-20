@@ -1,4 +1,3 @@
-// Lista de utilizadores com nome e código (em minúsculas)
 const users = {
   "abdallah jaajoul": "1234",
   "maria": "5678",
@@ -8,7 +7,7 @@ const users = {
 let members = [];
 let currentUser = "";
 
-// Função de login
+// LOGIN
 function login() {
   const nameInput = document.getElementById("username").value.trim().toLowerCase();
   const codeInput = document.getElementById("code").value.trim();
@@ -24,7 +23,7 @@ function login() {
   }
 }
 
-// Adicionar novo membro
+// ADICIONAR MEMBRO
 function addMember() {
   const name = document.getElementById("member-name").value.trim();
   const date = document.getElementById("member-date").value;
@@ -35,7 +34,7 @@ function addMember() {
   }
 }
 
-// Atualizar lista de membros com botão de remover
+// LISTA DE MEMBROS COM REMOVER
 function updateMemberList() {
   const list = document.getElementById("member-list");
   list.innerHTML = "";
@@ -56,9 +55,9 @@ function updateMemberList() {
   });
 }
 
-// Verifica aniversários e envia mensagens
+// VERIFICAR ANIVERSÁRIOS
 function checkBirthdays() {
-  const today = new Date().toISOString().slice(5, 10); // formato MM-DD
+  const today = new Date().toISOString().slice(5, 10); // MM-DD
 
   members.forEach(m => {
     const memberName = m.name.trim().toLowerCase();
@@ -74,25 +73,24 @@ function checkBirthdays() {
   });
 }
 
-// Navegar para página de fotos
+// NAVEGAR PARA PÁGINA DE FOTOS
 function goToPhotoPage() {
   document.getElementById("main-content").style.display = "none";
   document.getElementById("photo-page").style.display = "block";
 }
 
-// Voltar da página de fotos
+// VOLTAR DA PÁGINA DE FOTOS
 function backToMain() {
   document.getElementById("photo-page").style.display = "none";
   document.getElementById("main-content").style.display = "block";
 }
 
-// Guardar foto localmente
+// GUARDAR VÁRIAS FOTOS
 function savePhoto(event) {
   const files = event.target.files;
   const container = document.getElementById("saved-photo");
-  container.innerHTML = "";
 
-  Array.from(files).forEach((file, index) => {
+  Array.from(files).forEach(file => {
     const reader = new FileReader();
     reader.onload = function(e) {
       const img = document.createElement("img");
@@ -103,7 +101,6 @@ function savePhoto(event) {
       img.onclick = () => openPreview(e.target.result);
       container.appendChild(img);
 
-      // Guardar todas as imagens
       let saved = JSON.parse(localStorage.getItem("savedPhotos") || "[]");
       saved.push(e.target.result);
       localStorage.setItem("savedPhotos", JSON.stringify(saved));
@@ -112,13 +109,13 @@ function savePhoto(event) {
   });
 }
 
-// Abrir imagem em tamanho maior
+// ABRIR FOTO EM TAMANHO MAIOR
 function openPreview(src) {
   const win = window.open("", "_blank");
   win.document.write(`<img src="${src}" style="width:100%">`);
 }
 
-// Carregar imagens guardadas ao iniciar
+// CARREGAR FOTOS AO INICIAR
 window.onload = function() {
   const saved = JSON.parse(localStorage.getItem("savedPhotos") || "[]");
   const container = document.getElementById("saved-photo");
@@ -131,15 +128,4 @@ window.onload = function() {
     img.onclick = () => openPreview(src);
     container.appendChild(img);
   });
-};
-
-// Carregar foto guardada ao iniciar
-window.onload = function() {
-  const saved = localStorage.getItem("savedPhoto");
-  if (saved) {
-    const img = document.createElement("img");
-    img.src = saved;
-    img.style.maxWidth = "300px";
-    document.getElementById("saved-photo").appendChild(img);
-  }
 };
