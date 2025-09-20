@@ -1,7 +1,7 @@
 const users = {
-  "abdo": "1234",
-  "maria": "5678",
-  "joao": "abcd"
+  "Abdallah Jaajoul": "user14",
+  "Siba Jaajoul": "user23",
+  "Raghad Jaajoul": "user3"
 };
 
 let members = [];
