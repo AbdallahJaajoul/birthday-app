@@ -15,6 +15,7 @@ const userInfo = document.getElementById("userInfo");
 
 // Função login
 loginForm.addEventListener("submit", (e) => {
+  e.preventDefault();
   const nome = document.getElementById("nome").value.trim();
   const codigo = document.getElementById("codigo").value.trim();
 
