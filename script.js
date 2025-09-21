@@ -1,7 +1,7 @@
 const users = {
-  "abdallah jaajoul": "1234",
-  "maria": "5678",
-  "joao": "abcd"
+  "Abdallah Jaajoul": "user14",
+  "Siba Jaajoul": "user24",
+  "Raghad Jaajoul": "user3"
 };
 
 let members = [];
@@ -112,7 +112,7 @@ function savePhoto(event) {
 // ABRIR FOTO EM TAMANHO MAIOR
 function openPreview(src) {
   const win = window.open("", "_blank");
-  win.document.write(`<img src="${src}" style="width:100%">`);
+  win.document.write(`<img src="${src}" style="width:70%">`);
 }
 
 // CARREGAR FOTOS AO INICIAR
