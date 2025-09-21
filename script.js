@@ -1,7 +1,53 @@
+const members = [
+  { name: "Bruno Ferreira", date: "2000-09-21" },
+  { name: "Arlindo Pereira", date: "2000-01-02" },
+  { name: "Ricardo Sousa", date: "2000-01-03" },
+  { name: "Jéssica Samba", date: "2000-01-04" },
+  { name: "Adizica Pontes", date: "2000-01-05" },
+  { name: "Leonaldo Costa", date: "2000-01-06" },
+  { name: "Benedita Silva", date: "2000-01-07" },
+  { name: "Remualdo Santos", date: "2000-01-08" },
+  { name: "Naury Piedade", date: "2000-01-09" },
+  { name: "Abdallah Jaajoul", date: "2000-03-30" },
+  { name: "Herlander Costa", date: "2000-01-10" },
+  { name: "Adélia Carvalho", date: "2000-01-11" },
+  { name: "Tiago Sousa", date: "2000-01-12" },
+  { name: "Daniel Silva", date: "2000-01-13" },
+  { name: "Jamilton D’Almeida", date: "2000-01-14" },
+  { name: "Joel Costa", date: "2000-01-15" },
+  { name: "Jessica Lima", date: "2000-01-16" },
+  { name: "Francisco Paredes", date: "2000-01-17" },
+  { name: "Fábio Domingos", date: "2000-01-18" },
+  { name: "Alexandre Sousa", date: "2000-01-19" },
+  { name: "Chelsy Santos", date: "2000-01-20" },
+  { name: "Isabel Carvalho", date: "2000-01-21" },
+  { name: "Rui Monteiro", date: "2000-01-22" }
+];
+
 const users = {
-  "abdallah jaajoul": "2005",
-  "siba jaajoul": "2016",
-  "raghad jaajoul": "2003"
+  "bruno ferreira": "1",
+  "arlindo pereira": "2",
+  "ricardo sousa": "3",
+  "jéssica samba": "4",
+  "adizica pontes": "5",
+  "leonaldo costa": "6",
+  "benedita silva": "7",
+  "remualdo santos": "8",
+  "naury piedade": "9",
+  "abdallah jaajoul": "10",
+  "herlander costa": "11",
+  "adélia carvalho": "12",
+  "tiago sousa": "13",
+  "daniel silva": "14",
+  "jamilton d’almeida": "15",
+  "joel costa": "16",
+  "jessica lima": "17",
+  "francisco paredes": "18",
+  "fábio domingos": "19",
+  "alexandre sousa": "20",
+  "chelsy santos": "21",
+  "isabel carvalho": "22",
+  "rui monteiro": "23"
 };
 
 let members = [];
@@ -32,6 +78,7 @@ function addMember() {
 
   if (name && date) {
     members.push({ name, date });
+    localStorage.setItem("members", JSON.stringify(members)); // salva
     updateMemberList();
   }
 }
@@ -60,16 +107,17 @@ function updateMemberList() {
 // VERIFICAR ANIVERSÁRIOS
 function checkBirthdays() {
   const today = new Date().toISOString().slice(5, 10); // MM-DD
-
-  members.forEach(m => {
+  const aniversariantes = members.filter(m => m.date.slice(5, 10) === today);
+  
+  if (aniversariantes.length === 0) return;
+  
+  aniversariantes.forEach(m => {
     const memberName = m.name.trim().toLowerCase();
-    const birthDate = m.date.slice(5, 10);
-
-    if (birthDate === today) {
+    
       if (memberName === currentUser) {
-        alert(`Parabéns! Feliz Aniversário. Que seu dia seja tão lindo como tu`);
+        alert(`🎉 Parabéns ${m.name}! Feliz Aniversário. Que o teu dia seja incrível!`);
       } else {
-        alert(`Hoje o ${m.name} faz anos, Parabeniza`);
+        alert(`📢 Hoje é aniversário de ${m.name}! Não te esqueças de parabenizar.`);
       }
     }
   });
