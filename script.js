@@ -20,6 +20,8 @@ function login() {
     checkBirthdays();
   } else {
     error.textContent = "Código inválido para este nome.";
+    console.log("Nome digitado:", `"${nameInput}"`);
+    console.log("Código digitado:", `"${codeInput}"`);
   }
 }
 
