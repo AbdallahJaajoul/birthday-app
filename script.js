@@ -50,9 +50,6 @@ const users = {
   "rui monteiro": "23"
 };
 
-let members = [];
-let currentUser = "";
-
 // LOGIN
 function login() {
   const nameInput = document.getElementById("username").value.trim().toLowerCase();
