@@ -1,7 +1,7 @@
 const users = {
-  "Abdallah Jaajoul": "2005",
-  "Siba Jaajoul": "2016",
-  "Raghad Jaajoul": "2003"
+  "abdallah jaajoul": "2005",
+  "siba jaajoul": "2016",
+  "raghad jaajoul": "2003"
 };
 
 let members = [];
