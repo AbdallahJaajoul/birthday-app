@@ -116,9 +116,8 @@ function checkBirthdays() {
       } else {
         alert(`📢 Hoje é aniversário de ${m.name}! Não te esqueças de parabenizar.`);
       }
-    }
-  });
-}
+    });
+  }
 
 // NAVEGAR PARA PÁGINA DE FOTOS
 function goToPhotoPage() {
