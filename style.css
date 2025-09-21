@@ -60,7 +60,7 @@ body, html {
 }
 
 #photo-button {
-  background: blue;
+  background: white;
   color: black;
   padding: 10px;
   border-radius: 5px;
@@ -95,7 +95,7 @@ body, html {
 }
 
 #photo-page {
-  padding-left: 40px; /* afasta da esquerda */
+  padding-left: 20px; /* afasta da esquerda */
 }
 /* Página de fotos */
 #saved-photo img {
@@ -109,4 +109,43 @@ body, html {
 
 #saved-photo img:hover {
   transform: scale(1.05);
+}
+@media (max-width: 768px) {
+  /* Caixa de login mais larga e legível */
+  #login-box {
+    width: 90%;
+    font-size: 16px;
+  }
+
+  /* Ajuste de conteúdo principal e página de fotos */
+  #main-content, #photo-page {
+    padding: 10px;
+    font-size: 16px;
+  }
+
+  /* Campos de input e botões ocupam toda a largura */
+  input, button {
+    font-size: 16px;
+    padding: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+  }
+
+  /* Lista de membros em coluna no telemóvel */
+  #member-list li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Botão de foto mais compacto */
+  #photo-button {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  /* Imagens da galeria mais pequenas */
+  #saved-photo img {
+    max-width: 100px;
+  }
 }
