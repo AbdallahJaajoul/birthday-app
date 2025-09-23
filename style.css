@@ -119,7 +119,7 @@ body, html {
 #saved-photo img:hover {
   transform: scale(1.05);
 }
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   /* Caixa de login mais larga e legível */
   #login-box {
     width: 90%;
@@ -154,7 +154,7 @@ body, html {
   }
 
   /* Imagens da galeria mais pequenas */
-  @media (max-width: 768px) {
+  @media (max-width: 600px) {
   #saved-photo img {
     max-width: 100px;
   }
